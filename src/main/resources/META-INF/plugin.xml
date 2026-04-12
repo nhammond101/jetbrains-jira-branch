@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>com.nhammond101.jirabranch</id>
+    <name>Jira Branch Opener</name>
+    <vendor email="nick.hammond@example.com" url="https://github.com/nhammond101">nhammond101</vendor>
+
+    <description><![CDATA[
+        Reads the current Git branch name, extracts a Jira issue key (e.g. FSN-123),
+        and opens the corresponding Jira issue in your default browser at
+        https://n-able.atlassian.net.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <actions>
+        <action id="com.nhammond101.jirabranch.OpenJiraAction"
+                class="com.nhammond101.jirabranch.OpenJiraAction"
+                text="Open Jira Issue from Branch"
+                description="Extracts a Jira issue key from the current Git branch and opens it in the browser"
+                icon="AllIcons.Vcs.Branch">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift J"/>
+        </action>
+    </actions>
+</idea-plugin>
+
