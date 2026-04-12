@@ -1,34 +1,51 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.24"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.kotlin.jvm") version "2.3.20"
+    id("org.jetbrains.intellij.platform") version "2.14.0"
 }
 
 group = "com.nhammond101"
-version = "1.0.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+dependencies {
+    testImplementation(kotlin("test"))
+    intellijPlatform {
+        create("IC", "2024.1.7")
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
 }
 
 kotlin {
-    jvmToolchain(17)
-}
-
-intellij {
-    version.set("2024.1.7")
-    type.set("IC") // IntelliJ IDEA Community Edition
-    plugins.set(listOf())
-}
-
-tasks {
-    buildSearchableOptions {
-        enabled = false
+    jvmToolchain(25)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
+}
 
-    patchPluginXml {
-        sinceBuild.set("241")
-        untilBuild.set("")   // empty = no upper bound, compatible with all future IDE versions
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
+
+intellijPlatform {
+    buildSearchableOptions = false
+
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "241"
+            untilBuild = provider { null }
+        }
     }
 }
 

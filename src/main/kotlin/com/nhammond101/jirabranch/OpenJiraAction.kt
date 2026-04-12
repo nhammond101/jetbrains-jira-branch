@@ -12,6 +12,10 @@ class OpenJiraAction : AnAction() {
         private val JIRA_ISSUE_PATTERN = Regex("[A-Z][A-Z0-9_]+-\\d+")
         private const val JIRA_BASE_URL =
             "https://n-able.atlassian.net/secure/QuickSearch.jspa?searchString=%s"
+
+        fun extractIssueKey(branchName: String): String? {
+            return JIRA_ISSUE_PATTERN.find(branchName)?.value
+        }
     }
 
     override fun actionPerformed(e: AnActionEvent) {
@@ -36,8 +40,8 @@ class OpenJiraAction : AnAction() {
         }
 
         // Extract the first Jira issue key from the branch name (e.g. FSN-123)
-        val match = JIRA_ISSUE_PATTERN.find(branchName)
-        if (match == null) {
+        val jiraTicket = extractIssueKey(branchName)
+        if (jiraTicket == null) {
             Messages.showInfoMessage(
                 project,
                 "No Jira issue key found in branch name: \"$branchName\"\n\nExpected a pattern like FSN-123.",
@@ -45,8 +49,6 @@ class OpenJiraAction : AnAction() {
             )
             return
         }
-
-        val jiraTicket = match.value
         val url = JIRA_BASE_URL.format(jiraTicket)
         BrowserUtil.browse(url)
     }

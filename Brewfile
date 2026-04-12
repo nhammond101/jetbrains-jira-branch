@@ -1,0 +1,6 @@
+brew "commitizen"
+brew "git"
+brew "gradle"
+brew "java"
+brew "make"
+brew "pre-commit"

@@ -7,6 +7,7 @@
         Reads the current Git branch name, extracts a Jira issue key (e.g. FSN-123),
         and opens the corresponding Jira issue in your default browser at
         https://n-able.atlassian.net.
+        Supports builds with Java 25 toolchains.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
