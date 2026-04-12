@@ -10,11 +10,13 @@ class OpenJiraAction : AnAction() {
 
     companion object {
         private val JIRA_ISSUE_PATTERN = Regex("[A-Z][A-Z0-9_]+-\\d+")
-        private const val JIRA_BASE_URL =
-            "https://n-able.atlassian.net/secure/QuickSearch.jspa?searchString=%s"
 
         fun extractIssueKey(branchName: String): String? {
             return JIRA_ISSUE_PATTERN.find(branchName)?.value
+        }
+
+        fun buildIssueUrl(issueKey: String, jiraSiteUrl: String): String {
+            return JiraUrlSupport.buildIssueUrl(jiraSiteUrl, issueKey)
         }
     }
 
@@ -49,7 +51,8 @@ class OpenJiraAction : AnAction() {
             )
             return
         }
-        val url = JIRA_BASE_URL.format(jiraTicket)
+        val jiraSiteUrl = JiraBranchSettings.getInstance().getJiraSiteUrl()
+        val url = buildIssueUrl(jiraTicket, jiraSiteUrl)
         BrowserUtil.browse(url)
     }
 

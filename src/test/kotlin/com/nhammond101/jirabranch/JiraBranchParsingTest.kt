@@ -31,4 +31,12 @@ class JiraBranchParsingTest {
     fun `extractIssueKey returns null when the branch has no Jira key`() {
         assertNull(OpenJiraAction.extractIssueKey("feature/no-ticket-here"))
     }
+
+    @Test
+    fun `buildIssueUrl uses configured Jira site URL`() {
+        assertEquals(
+            "https://example.atlassian.net/secure/QuickSearch.jspa?searchString=FSN-123",
+            OpenJiraAction.buildIssueUrl("FSN-123", "https://example.atlassian.net"),
+        )
+    }
 }

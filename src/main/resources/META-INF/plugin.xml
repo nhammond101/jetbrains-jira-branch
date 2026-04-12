@@ -5,12 +5,20 @@
 
     <description><![CDATA[
         Reads the current Git branch name, extracts a Jira issue key (e.g. FSN-123),
-        and opens the corresponding Jira issue in your default browser at
-        https://n-able.atlassian.net.
+        and opens the corresponding Jira issue in your default browser using a configurable
+        Jira site URL (defaulting to https://n-able.atlassian.net).
+        Configure the Jira site in Settings | Tools | Jira Branch Opener.
         Supports builds with Java 25 toolchains.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                id="com.nhammond101.jirabranch.settings"
+                displayName="Jira Branch Opener"
+                instance="com.nhammond101.jirabranch.JiraSettingsConfigurable"/>
+    </extensions>
 
     <actions>
         <action id="com.nhammond101.jirabranch.OpenJiraAction"

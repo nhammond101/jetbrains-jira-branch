@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Test release version helper
+        run: python3 -m unittest scripts.test_release_version
+
+      - name: Determine next release version
+        id: version
+        run: python3 scripts/release_version.py --github-output "$GITHUB_OUTPUT"
+
+      - name: Log release decision
+        run: |
+          echo "should_release=${{ steps.version.outputs.should_release }}"
+          echo "version=${{ steps.version.outputs.version }}"
+          echo "release_type=${{ steps.version.outputs.release_type }}"
+          echo "previous_tag=${{ steps.version.outputs.previous_tag }}"
+          echo "reason=${{ steps.version.outputs.reason }}"
+
+      - name: Run Gradle tests
+        if: steps.version.outputs.should_release == 'true'
+        run: ./gradlew test
+
+      - name: Build plugin for release
+        if: steps.version.outputs.should_release == 'true'
+        run: ./gradlew buildPlugin -PpluginVersion=${{ steps.version.outputs.version }}
+
+      - name: Create GitHub release
+        if: steps.version.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="v${{ steps.version.outputs.version }}"
+          gh release create "$tag" \
+            --target "$GITHUB_SHA" \
+            --title "$tag" \
+            --generate-notes \
+            build/distributions/*.zip \
+            build/libs/*.jar
+

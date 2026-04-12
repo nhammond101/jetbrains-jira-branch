@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+- Added a settings page for configuring the Jira site URL used when opening tickets from the current branch.
+- Added GitHub Actions workflows for CI and automated releases.
+
+### Changed
+- Opening a Jira ticket from the current branch now uses the configured Jira site URL instead of a hardcoded Jira instance.
+- Releases from `main` now compute the next semantic version from Conventional Commits and publish plugin artifacts automatically.
+
 ## [1.2.0] - 2026-04-12
 
 ### Added
