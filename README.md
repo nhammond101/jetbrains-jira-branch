@@ -16,7 +16,7 @@ If you do not change it, the plugin defaults to `https://n-able.atlassian.net`.
 ## Automation
 
 - `.github/workflows/build.yml` runs the Python versioning helper tests, Gradle tests, and `buildPlugin` on pushes and pull requests.
-- `.github/workflows/release.yml` runs on pushes to `main`, determines the next semantic version from Conventional Commits, builds the plugin, and creates a GitHub release with the generated artifacts.
+- `.github/workflows/release.yml` runs on pushes to `main`, determines the next semantic version from Conventional Commits, builds the plugin, publishes a JetBrains custom repository directory (`jetbrains/updatePlugins.xml` + plugin ZIP) to `gh-pages`, and creates a GitHub release with the generated artifacts.
 - The release workflow uses the latest reachable `vX.Y.Z` tag as its baseline. If no semantic version tag exists yet, it creates an initial release using `pluginVersion` from `gradle.properties`.
 - Release bumps follow Conventional Commits: `feat` → minor, `fix`/`perf` → patch, and `!` or `BREAKING CHANGE:` → major. Commits such as `docs`, `chore`, and `ci` do not create a release by themselves.
 
