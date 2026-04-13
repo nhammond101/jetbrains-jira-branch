@@ -1,0 +1,43 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_stages:
+  - pre-commit
+  - pre-push
+default_install_hook_types:
+  - commit-msg
+  - pre-commit
+  - pre-push
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: no-commit-to-branch
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+      - id: check-yaml
+        args:
+          - --allow-multiple-documents
+  - repo: local
+    hooks:
+      - id: commitizen
+        name: Validate git commit message
+        entry: cz check --allow-abort --allowed-prefixes Merge Revert fixup! squash! --commit-msg-file
+        language: system
+        stages: [commit-msg]
+      - id: python-release-version-tests
+        name: Run Python release helper tests
+        entry: make
+        args: ["python-test-release-version"]
+        pass_filenames: false
+        language: system
+        stages: [pre-push]
+        always_run: true
+      - id: gradle-verify
+        name: Run Gradle verify tasks
+        entry: make
+        args: ["gradle-verify"]
+        pass_filenames: false
+        language: system
+        stages: [pre-push]
+        always_run: true

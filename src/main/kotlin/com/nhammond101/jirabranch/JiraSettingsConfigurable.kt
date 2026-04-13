@@ -56,4 +56,3 @@ class JiraSettingsConfigurable : Configurable {
         jiraSiteUrlField = null
     }
 }
-
