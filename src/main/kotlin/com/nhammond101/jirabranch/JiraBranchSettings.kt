@@ -38,5 +38,3 @@ class JiraBranchSettings : PersistentStateComponent<JiraBranchSettings.State> {
         fun isValidSiteUrl(value: String): Boolean = JiraUrlSupport.isValidSiteUrl(value)
     }
 }
-
-

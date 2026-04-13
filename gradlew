@@ -189,4 +189,3 @@ set -- \
 
 # shellcheck disable=SC2086
 exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "$@"
-

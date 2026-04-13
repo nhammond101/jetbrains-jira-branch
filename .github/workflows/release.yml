@@ -95,4 +95,3 @@ jobs:
             --generate-notes \
             build/distributions/*.zip \
             build/libs/*.jar
-

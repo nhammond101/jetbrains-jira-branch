@@ -15,10 +15,30 @@ If you do not change it, the plugin defaults to `https://n-able.atlassian.net`.
 
 ## Automation
 
-- `.github/workflows/ci.yml` runs the Python versioning helper tests, Gradle tests, and `buildPlugin` on pushes and pull requests.
+- `.github/workflows/build.yml` runs the Python versioning helper tests, Gradle tests, and `buildPlugin` on pushes and pull requests.
 - `.github/workflows/release.yml` runs on pushes to `main`, determines the next semantic version from Conventional Commits, builds the plugin, and creates a GitHub release with the generated artifacts.
 - The release workflow uses the latest reachable `vX.Y.Z` tag as its baseline. If no semantic version tag exists yet, it creates an initial release using `pluginVersion` from `gradle.properties`.
 - Release bumps follow Conventional Commits: `feat` → minor, `fix`/`perf` → patch, and `!` or `BREAKING CHANGE:` → major. Commits such as `docs`, `chore`, and `ci` do not create a release by themselves.
+
+## Local hooks
+
+This repository includes a checked-in `.pre-commit-config.yaml` that protects against common whitespace/YAML mistakes, blocks direct commits to `main`, validates Conventional Commit messages, and mirrors the repo's Python + Gradle verification steps before pushes.
+
+Install the hooks after bootstrapping local tooling:
+
+```bash
+brew bundle
+pre-commit install --hook-type pre-commit --hook-type commit-msg --hook-type pre-push
+```
+
+Run the hooks on demand:
+
+```bash
+pre-commit run --all-files
+cz check -m "feat: verify local hook setup"
+make python-test-release-version
+make gradle-verify
+```
 
 ## Usage
 
@@ -63,4 +83,3 @@ build/distributions/jira-branch-opener-<version>.zip
 ## Release Notes
 
 See GitHub Releases and `CHANGELOG.md` for published versions and notable changes.
-
