@@ -82,6 +82,13 @@ def build_update_plugins_xml(metadata: PluginMetadata, version: str, plugin_url:
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_body + "\n"
 
 
+def normalize_download_base_url(download_base_url: str) -> str:
+    base = download_base_url.rstrip("/")
+    if base.startswith("https://raw.githubusercontent.com/") and "/refs/heads/" in base:
+        return base.replace("/refs/heads/", "/")
+    return base
+
+
 def publish_custom_repository(
     *,
     plugin_xml_path: Path,
@@ -99,7 +106,8 @@ def publish_custom_repository(
     target_zip_path = output_dir / zip_path.name
     shutil.copy2(zip_path, target_zip_path)
 
-    plugin_url = f"{download_base_url.rstrip('/')}/{zip_path.name}"
+    normalized_base_url = normalize_download_base_url(download_base_url)
+    plugin_url = f"{normalized_base_url}/{zip_path.name}"
     update_plugins_xml = build_update_plugins_xml(metadata, version=version, plugin_url=plugin_url)
     (output_dir / "updatePlugins.xml").write_text(update_plugins_xml, encoding="utf-8")
 

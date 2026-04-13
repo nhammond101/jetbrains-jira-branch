@@ -72,6 +72,35 @@ class CustomPluginRepositoryTest(unittest.TestCase):
             self.assertEqual("241", idea_version.get("since-build"))
             self.assertEqual("251.*", idea_version.get("until-build"))
 
+    def test_publish_custom_repository_normalizes_raw_refs_heads_url(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            repo = Path(temp_dir)
+            plugin_xml = repo / "src/main/resources/META-INF/plugin.xml"
+            plugin_xml.parent.mkdir(parents=True, exist_ok=True)
+            plugin_xml.write_text("<idea-plugin><id>com.example.test</id></idea-plugin>", encoding="utf-8")
+
+            zip_path = repo / "build/distributions/example-plugin-1.2.3.zip"
+            zip_path.parent.mkdir(parents=True, exist_ok=True)
+            zip_path.write_bytes(b"zip-bytes")
+
+            output_dir = repo / "build/jetbrains"
+            publish_custom_repository(
+                plugin_xml_path=plugin_xml,
+                zip_path=zip_path,
+                output_dir=output_dir,
+                version="1.2.3",
+                download_base_url="https://raw.githubusercontent.com/owner/repo/refs/heads/gh-pages/jetbrains",
+            )
+
+            root = ET.fromstring((output_dir / "updatePlugins.xml").read_text(encoding="utf-8"))
+            plugin = root.find("plugin")
+            self.assertIsNotNone(plugin)
+            assert plugin is not None
+            self.assertEqual(
+                "https://raw.githubusercontent.com/owner/repo/gh-pages/jetbrains/example-plugin-1.2.3.zip",
+                plugin.get("url"),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
