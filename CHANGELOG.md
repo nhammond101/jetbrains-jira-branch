@@ -14,6 +14,7 @@ All notable changes to this project are documented in this file.
 - Opening a Jira ticket from the current branch now uses the configured Jira site URL instead of a hardcoded Jira instance.
 - Releases from `main` now compute the next semantic version from Conventional Commits and publish plugin artifacts automatically.
 - Releases from `main` now also publish custom repository artifacts to the `gh-pages` branch under `jetbrains/`.
+- Generated custom repository plugin download URLs now use `raw.githubusercontent.com/<owner>/<repo>/gh-pages/...` and normalize accidental `refs/heads` paths.
 - Documented the local hook workflow for Python and Gradle verification before pushes.
 
 ## [1.2.0] - 2026-04-12

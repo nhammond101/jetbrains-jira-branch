@@ -91,7 +91,7 @@ jobs:
           python3 scripts/custom_plugin_repository.py \
             --version "${{ steps.version.outputs.version }}" \
             --zip-path "build/distributions/jira-branch-opener-${{ steps.version.outputs.version }}.zip" \
-            --download-base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/jetbrains" \
+            --download-base-url "https://raw.githubusercontent.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/gh-pages/jetbrains" \
             --output-dir build/jetbrains
 
       # Publish the custom repository contents under /jetbrains on the gh-pages branch.
