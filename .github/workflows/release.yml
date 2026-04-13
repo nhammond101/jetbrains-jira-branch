@@ -35,20 +35,24 @@ jobs:
 
       # Check out the full history so conventional commits can be read
       - name: Fetch Sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       # Set up the Java environment for the next steps
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "25"
 
+      # Ensure Gradle wrapper has execute permission on Linux runners
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./gradlew
+
       # Setup Gradle (handles caching automatically)
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       # Verify the release version helper script is working
       - name: Test Release Version Helper
@@ -71,12 +75,12 @@ jobs:
       # Run Gradle tests before building the release artifact
       - name: Run Tests
         if: steps.version.outputs.should_release == 'true'
-        run: ./gradlew test
+        run: ./gradlew test --stacktrace
 
       # Build the plugin with the determined version
       - name: Build Plugin
         if: steps.version.outputs.should_release == 'true'
-        run: ./gradlew buildPlugin -PpluginVersion=${{ steps.version.outputs.version }}
+        run: ./gradlew buildPlugin --stacktrace -PpluginVersion=${{ steps.version.outputs.version }}
 
       # Publish a GitHub release with the built artifacts
       - name: Create GitHub Release

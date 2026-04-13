@@ -32,22 +32,26 @@ jobs:
 
       # Check out the current repository
       - name: Fetch Sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Set up the Java environment for the next steps
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "25"
 
+      # Ensure Gradle wrapper has execute permission on Linux runners
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./gradlew
+
       # Setup Gradle (handles caching automatically)
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       # Build the plugin
       - name: Build Plugin
-        run: ./gradlew buildPlugin
+        run: ./gradlew buildPlugin --stacktrace
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
@@ -61,7 +65,7 @@ jobs:
 
       # Store the built plugin as an artifact for downloading
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.artifact.outputs.filename }}
           path: ./build/distributions/content/*/*
@@ -82,18 +86,22 @@ jobs:
 
       # Check out the current repository
       - name: Fetch Sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Set up the Java environment for the next steps
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "25"
 
+      # Ensure Gradle wrapper has execute permission on Linux runners
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x ./gradlew
+
       # Setup Gradle (read-only cache since build job populated it)
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
         with:
           cache-read-only: true
 
@@ -108,7 +116,7 @@ jobs:
       # Collect test results of failed tests
       - name: Collect Tests Result
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tests-result
           path: ${{ github.workspace }}/build/reports/tests
