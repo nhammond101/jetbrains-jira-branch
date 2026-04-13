@@ -106,8 +106,10 @@ jobs:
           cache-read-only: true
 
       # Test the release version helper script
-      - name: Test Release Version Helper
-        run: python3 -m unittest scripts.test_release_version
+      - name: Test Python Release Helpers
+        run: |
+          python3 -m unittest scripts.test_release_version
+          python3 -m unittest scripts.test_custom_plugin_repository
 
       # Run Gradle tests
       - name: Run Tests

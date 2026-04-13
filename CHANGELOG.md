@@ -8,10 +8,12 @@ All notable changes to this project are documented in this file.
 - Added a settings page for configuring the Jira site URL used when opening tickets from the current branch.
 - Added GitHub Actions workflows for CI and automated releases.
 - Added checked-in `pre-commit` configuration for commit hygiene, Conventional Commit validation, and local pre-push verification.
+- Added generation of `jetbrains/updatePlugins.xml` and plugin ZIP publishing for a JetBrains custom plugin repository.
 
 ### Changed
 - Opening a Jira ticket from the current branch now uses the configured Jira site URL instead of a hardcoded Jira instance.
 - Releases from `main` now compute the next semantic version from Conventional Commits and publish plugin artifacts automatically.
+- Releases from `main` now also publish custom repository artifacts to the `gh-pages` branch under `jetbrains/`.
 - Documented the local hook workflow for Python and Gradle verification before pushes.
 
 ## [1.2.0] - 2026-04-12

@@ -1,7 +1,7 @@
 project_root := $(CURDIR)
 gradlew := $(project_root)/gradlew
 
-.PHONY: run-housekeeping commitizen-run-check python-test-release-version gradle-verify
+.PHONY: run-housekeeping commitizen-run-check python-test-release-version python-test-custom-plugin-repository gradle-verify
 
 ## Housekeeping
 .run-brew-upgrade:
@@ -26,6 +26,10 @@ commitizen-run-check:
 # Run the Python tests that power release version calculation.
 python-test-release-version:
 	@python3 -m unittest scripts.test_release_version
+
+# Run Python tests for generating a JetBrains custom plugin repository.
+python-test-custom-plugin-repository:
+	@python3 -m unittest scripts.test_custom_plugin_repository
 
 # Mirror the Gradle verification used in CI before pushing changes.
 gradle-verify:
