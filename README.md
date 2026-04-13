@@ -17,6 +17,7 @@ If you do not change it, the plugin defaults to `https://n-able.atlassian.net`.
 
 - `.github/workflows/build.yml` runs the Python versioning helper tests, Gradle tests, and `buildPlugin` on pushes and pull requests.
 - `.github/workflows/release.yml` runs on pushes to `main`, determines the next semantic version from Conventional Commits, builds the plugin, publishes a JetBrains custom repository directory (`jetbrains/updatePlugins.xml` + plugin ZIP) to `gh-pages`, and creates a GitHub release with the generated artifacts.
+- `.github/dependabot.yml` opens weekly dependency update pull requests for GitHub Actions and Gradle dependencies.
 - The published JetBrains custom repository feed is `https://raw.githubusercontent.com/nhammond101/jetbrains-jira-branch/gh-pages/jetbrains/updatePlugins.xml`.
 - The custom repository ZIP download links use the `raw.githubusercontent.com/<owner>/<repo>/gh-pages/jetbrains/...` path.
 - The release workflow uses the latest reachable `vX.Y.Z` tag as its baseline. If no semantic version tag exists yet, it creates an initial release using `pluginVersion` from `gradle.properties`.

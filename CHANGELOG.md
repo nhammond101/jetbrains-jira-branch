@@ -9,6 +9,7 @@ All notable changes to this project are documented in this file.
 - Added GitHub Actions workflows for CI and automated releases.
 - Added checked-in `pre-commit` configuration for commit hygiene, Conventional Commit validation, and local pre-push verification.
 - Added generation of `jetbrains/updatePlugins.xml` and plugin ZIP publishing for a JetBrains custom plugin repository.
+- Added Dependabot configuration for weekly GitHub Actions and Gradle dependency update PRs.
 
 ### Changed
 - Opening a Jira ticket from the current branch now uses the configured Jira site URL instead of a hardcoded Jira instance.
