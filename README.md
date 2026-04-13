@@ -17,7 +17,8 @@ If you do not change it, the plugin defaults to `https://n-able.atlassian.net`.
 
 - `.github/workflows/build.yml` runs the Python versioning helper tests, Gradle tests, and `buildPlugin` on pushes and pull requests.
 - `.github/workflows/release.yml` runs on pushes to `main`, determines the next semantic version from Conventional Commits, builds the plugin, publishes a JetBrains custom repository directory (`jetbrains/updatePlugins.xml` + plugin ZIP) to `gh-pages`, and creates a GitHub release with the generated artifacts.
-- The custom repository metadata and ZIP download links use the `raw.githubusercontent.com/<owner>/<repo>/gh-pages/jetbrains/...` path.
+- The published JetBrains custom repository feed is `https://raw.githubusercontent.com/nhammond101/jetbrains-jira-branch/gh-pages/jetbrains/updatePlugins.xml`.
+- The custom repository ZIP download links use the `raw.githubusercontent.com/<owner>/<repo>/gh-pages/jetbrains/...` path.
 - The release workflow uses the latest reachable `vX.Y.Z` tag as its baseline. If no semantic version tag exists yet, it creates an initial release using `pluginVersion` from `gradle.properties`.
 - Release bumps follow Conventional Commits: `feat` → minor, `fix`/`perf` → patch, and `!` or `BREAKING CHANGE:` → major. Commits such as `docs`, `chore`, and `ci` do not create a release by themselves.
 
@@ -71,8 +72,26 @@ build/distributions/jira-branch-opener-<version>.zip
 
 ## Installation
 
-1. Open JetBrains IDE (IntelliJ IDEA, WebStorm, PyCharm, etc.)
-2. Go to **Settings → Plugins → ⚙️ → Install Plugin from Disk…**
+### Install from the published plugin repository
+
+1. Open your JetBrains IDE (IntelliJ IDEA, WebStorm, PyCharm, etc.)
+2. Go to **Settings / Preferences → Plugins**
+3. Click the gear icon and choose **Manage Plugin Repositories…**
+4. Add this custom repository URL:
+
+   ```text
+   https://raw.githubusercontent.com/nhammond101/jetbrains-jira-branch/gh-pages/jetbrains/updatePlugins.xml
+   ```
+
+5. Close the repository dialog, search for **Jira Branch Opener**, and install it from the Marketplace / custom repositories list
+6. Restart the IDE when prompted
+
+> Do not use the `.../refs/heads/gh-pages/...` form of the URL. JetBrains should be pointed at the `.../gh-pages/jetbrains/updatePlugins.xml` feed above.
+
+### Install from a local ZIP (fallback)
+
+1. Build the plugin or download a release ZIP
+2. Go to **Settings / Preferences → Plugins → ⚙️ → Install Plugin from Disk…**
 3. Select `build/distributions/jira-branch-opener-<version>.zip`
 4. Restart the IDE
 
