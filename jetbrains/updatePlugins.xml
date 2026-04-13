@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-    <plugin id="com.nhammond101.jirabranch" url="https://nhammond101.github.io/jetbrains-jira-branch/jetbrains/jira-branch-opener-1.4.0.zip" version="1.4.0">
+    <plugin id="com.nhammond101.jirabranch" url="https://raw.githubusercontent.com/nhammond101/jetbrains-jira-branch/gh-pages/jetbrains/jira-branch-opener-1.5.0.zip" version="1.5.0">
         <name>Jira Branch Opener</name>
         <vendor>nhammond101</vendor>
         <description>Reads the current Git branch name, extracts a Jira issue key (e.g. FSN-123), and opens the corresponding Jira issue in your default browser using a configurable Jira site URL (defaulting to https://n-able.atlassian.net). Configure the Jira site in Settings | Tools | Jira Branch Opener. Supports builds with Java 25 toolchains.</description>
