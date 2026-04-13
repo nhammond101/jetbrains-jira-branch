@@ -1,3 +1,9 @@
+# GitHub Actions Workflow for automatically releasing a new plugin version when
+# commits are pushed to the main branch. The next version is determined by reading
+# conventional commits since the last tag.
+#
+# GitHub Actions reference: https://help.github.com/en/actions
+
 name: Release
 
 on:
@@ -13,33 +19,48 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
 
+  # Determine version, build, and publish a GitHub release
+  release:
+    name: Release
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+
+      # Free GitHub Actions Environment Disk Space
+      - name: Maximize Build Space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          large-packages: false
+
+      # Check out the full history so conventional commits can be read
+      - name: Fetch Sources
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Java 25
+      # Set up the Java environment for the next steps
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "25"
-          cache: gradle
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+      # Setup Gradle (handles caching automatically)
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: Test release version helper
+      # Verify the release version helper script is working
+      - name: Test Release Version Helper
         run: python3 -m unittest scripts.test_release_version
 
-      - name: Determine next release version
+      # Read conventional commits to determine the next version
+      - name: Determine Next Release Version
         id: version
         run: python3 scripts/release_version.py --github-output "$GITHUB_OUTPUT"
 
-      - name: Log release decision
+      # Log the release decision for debugging
+      - name: Log Release Decision
         run: |
           echo "should_release=${{ steps.version.outputs.should_release }}"
           echo "version=${{ steps.version.outputs.version }}"
@@ -47,15 +68,18 @@ jobs:
           echo "previous_tag=${{ steps.version.outputs.previous_tag }}"
           echo "reason=${{ steps.version.outputs.reason }}"
 
-      - name: Run Gradle tests
+      # Run Gradle tests before building the release artifact
+      - name: Run Tests
         if: steps.version.outputs.should_release == 'true'
         run: ./gradlew test
 
-      - name: Build plugin for release
+      # Build the plugin with the determined version
+      - name: Build Plugin
         if: steps.version.outputs.should_release == 'true'
         run: ./gradlew buildPlugin -PpluginVersion=${{ steps.version.outputs.version }}
 
-      - name: Create GitHub release
+      # Publish a GitHub release with the built artifacts
+      - name: Create GitHub Release
         if: steps.version.outputs.should_release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
