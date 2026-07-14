@@ -7,7 +7,7 @@ Releases are published from `main` and versioned automatically from Conventional
 ## How it works
 
 1. Reads the current branch with `git rev-parse --abbrev-ref HEAD`
-2. Scans the branch name for the first match of the pattern `[A-Z][A-Z0-9_]+-\d+` (e.g. `FSN-123`, `PROJ-42`)
+2. Scans the branch name for the first match of the pattern `[A-Za-z][A-Za-z0-9_]+-\d+` (case-insensitive, e.g. `FSN-123`, `PROJ-42`, `fsn-123`); the matched key is normalized to uppercase
 3. Opens `<configured-jira-site>/secure/QuickSearch.jspa?searchString=FSN-123` in the default browser
 
 The Jira site URL is configurable from **Settings → Tools → Jira Branch Opener**.
