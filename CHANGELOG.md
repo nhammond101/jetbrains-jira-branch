@@ -12,6 +12,7 @@ All notable changes to this project are documented in this file.
 - Added Dependabot configuration for weekly GitHub Actions and Gradle dependency update PRs.
 
 ### Changed
+- Jira issue keys in branch names are now matched case-insensitively (e.g. `fsn-123`) and normalized to uppercase when opening the ticket.
 - Opening a Jira ticket from the current branch now uses the configured Jira site URL instead of a hardcoded Jira instance.
 - Releases from `main` now compute the next semantic version from Conventional Commits and publish plugin artifacts automatically.
 - Releases from `main` now also publish custom repository artifacts to the `gh-pages` branch under `jetbrains/`.
