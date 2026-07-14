@@ -22,9 +22,9 @@ class JiraBranchParsingTest {
     }
 
     @Test
-    fun `extractIssueKey rejects lowercase or mixed-case Jira keys`() {
-        assertNull(OpenJiraAction.extractIssueKey("feature/fsn-123-add-login"))
-        assertNull(OpenJiraAction.extractIssueKey("feature/Fsn-123-add-login"))
+    fun `extractIssueKey normalizes lowercase or mixed-case Jira keys to uppercase`() {
+        assertEquals("FSN-123", OpenJiraAction.extractIssueKey("feature/fsn-123-add-login"))
+        assertEquals("FSN-123", OpenJiraAction.extractIssueKey("feature/Fsn-123-add-login"))
     }
 
     @Test

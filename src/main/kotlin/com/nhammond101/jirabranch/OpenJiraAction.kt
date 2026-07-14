@@ -9,10 +9,10 @@ import com.intellij.openapi.ui.Messages
 class OpenJiraAction : AnAction() {
 
     companion object {
-        private val JIRA_ISSUE_PATTERN = Regex("[A-Z][A-Z0-9_]+-\\d+")
+        private val JIRA_ISSUE_PATTERN = Regex("[A-Za-z][A-Za-z0-9_]+-\\d+")
 
         fun extractIssueKey(branchName: String): String? {
-            return JIRA_ISSUE_PATTERN.find(branchName)?.value
+            return JIRA_ISSUE_PATTERN.find(branchName)?.value?.uppercase()
         }
 
         fun buildIssueUrl(issueKey: String, jiraSiteUrl: String): String {
