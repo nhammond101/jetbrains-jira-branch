@@ -35,7 +35,7 @@ jobs:
 
       # Check out the full history so conventional commits can be read
       - name: Fetch Sources
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
